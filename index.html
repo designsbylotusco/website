@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Designs By Lotus — Crafting Digital Experiences</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:   #080808;
+    --dark:    #111110;
+    --panel:   #161614;
+    --gold:    #D4B87A;
+    --gold-lt: #E8D4A0;
+    --gold-dk: #A8904E;
+    --cream:   #F0EAD8;
+    --muted:   #8A8272;
+    --border:  rgba(212,184,122,0.18);
+    --ff-disp: 'Cormorant Garamond', serif;
+    --ff-head: 'Cinzel', serif;
+    --ff-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: var(--ff-body);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; opacity: .4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.6rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: #000;
+    border-bottom: 1px solid transparent;
+    transition: padding .4s, border-bottom .4s;
+  }
+  nav.scrolled {
+    padding: 1.1rem 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: .85rem;
+    text-decoration: none;
+  }
+  .nav-logo svg { width: 38px; height: 26px; }
+  .nav-logo-text {
+    font-family: var(--ff-head);
+    font-size: .72rem; letter-spacing: .22em;
+    color: var(--gold-lt); text-transform: uppercase;
+    line-height: 1.3;
+  }
+  .nav-links { display: flex; align-items: center; gap: 2.8rem; }
+  .nav-links a {
+    font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+    transition: color .25s;
+  }
+  .nav-links a:hover { color: var(--gold-lt); }
+  .nav-cta {
+    font-family: var(--ff-head);
+    font-size: .65rem; letter-spacing: .18em; text-transform: uppercase;
+    padding: .65rem 1.6rem;
+    border: 1px solid var(--gold);
+    color: var(--gold); background: transparent;
+    text-decoration: none;
+    transition: all .3s;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--black); }
+
+  /* ── HERO ── */
+  #home {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 10rem 2rem 6rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: -1;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 40%, rgba(212,184,122,.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 20% 80%, rgba(212,184,122,.04) 0%, transparent 60%),
+      var(--black);
+  }
+  .hero-bg-lines {
+    position: absolute; inset: 0; z-index: -1;
+    background-image:
+      linear-gradient(rgba(212,184,122,.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,184,122,.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+  }
+  .hero-eyebrow {
+    font-family: var(--ff-head);
+    font-size: .65rem; letter-spacing: .35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp .8s .3s forwards;
+  }
+  .hero-title {
+    font-family: var(--ff-disp);
+    font-size: clamp(3.6rem, 10vw, 8rem);
+    font-weight: 300; line-height: 1.02;
+    color: var(--cream); letter-spacing: -.01em;
+    opacity: 0; animation: fadeUp .9s .5s forwards;
+  }
+  .hero-title em {
+    font-style: italic; color: var(--gold);
+    font-weight: 300;
+  }
+  .hero-sub {
+    font-size: 1.05rem; font-weight: 300;
+    color: var(--muted); max-width: 480px;
+    margin: 2rem auto 3.5rem;
+    opacity: 0; animation: fadeUp .9s .75s forwards;
+  }
+  .hero-actions {
+    display: flex; gap: 1.2rem; justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0; animation: fadeUp .9s .95s forwards;
+  }
+  .btn-primary {
+    font-family: var(--ff-head);
+    font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
+    padding: 1.1rem 2.6rem;
+    background: var(--gold); color: var(--black);
+    border: none; text-decoration: none; cursor: pointer;
+    transition: all .3s; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-lt); transform: translateY(-2px); }
+  .btn-ghost {
+    font-family: var(--ff-head);
+    font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
+    padding: 1.1rem 2.6rem;
+    border: 1px solid var(--border); color: var(--cream);
+    text-decoration: none; cursor: pointer;
+    transition: all .3s; display: inline-block;
+    background: transparent;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+  .hero-scroll {
+    position: absolute; bottom: 3rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: .6rem;
+    opacity: 0; animation: fadeUp .9s 1.4s forwards;
+    cursor: pointer;
+  }
+  .hero-scroll span {
+    font-size: .6rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .scroll-line {
+    width: 1px; height: 44px; background: var(--border);
+    position: relative; overflow: hidden;
+  }
+  .scroll-line::after {
+    content: '';
+    position: absolute; top: -100%; left: 0;
+    width: 100%; height: 100%;
+    background: var(--gold);
+    animation: scrollAnim 1.8s 1.6s ease infinite;
+  }
+
+  /* ── HERO LOGO WATERMARK ── */
+  .hero-logo-bg {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -52%);
+    width: clamp(480px, 80vw, 940px);
+    height: auto;
+    z-index: 0;
+    opacity: 0;
+    animation: logoFadeIn 2.4s 1s ease forwards;
+    pointer-events: none;
+  }
+  .hero-logo-bg svg { width: 100%; height: 100%; }
+  @keyframes logoFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  /* ensure hero text sits above the watermark */
+  .hero-eyebrow, .hero-title, .hero-sub, .hero-actions, .hero-scroll {
+    position: relative; z-index: 1;
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    padding: 1.2rem 0; overflow: hidden;
+  }
+  .marquee-inner {
+    display: flex; gap: 3rem;
+    animation: marquee 28s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    font-family: var(--ff-head);
+    font-size: .6rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--muted); display: flex; align-items: center; gap: 1.5rem;
+    flex-shrink: 0;
+  }
+  .marquee-dot { width: 4px; height: 4px; background: var(--gold); border-radius: 50%; }
+
+  /* ── SECTION COMMONS ── */
+  section { position: relative; z-index: 2; }
+  .section-pad { padding: 8rem 4rem; }
+  .section-pad-sm { padding: 5rem 4rem; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-family: var(--ff-head);
+    font-size: .6rem; letter-spacing: .35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .section-label::before {
+    content: ''; display: block; width: 32px; height: 1px; background: var(--gold);
+  }
+  .section-title {
+    font-family: var(--ff-disp);
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 300; line-height: 1.1; color: var(--cream);
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .reveal { opacity: 1; transform: translateY(0); transition: opacity .7s ease, transform .7s ease; }
+  .js-ready .reveal { opacity: 0; transform: translateY(30px); }
+  .js-ready .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── ABOUT STRIP ── */
+  #about-strip {
+    background: var(--panel);
+    padding: 6rem 4rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .about-strip-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+  }
+  .about-strip-title {
+    font-family: var(--ff-disp);
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 300; line-height: 1.15;
+    color: var(--cream);
+  }
+  .about-strip-title em { font-style: italic; color: var(--gold); }
+  .about-strip-body { color: var(--muted); line-height: 1.8; }
+  .about-strip-body p + p { margin-top: 1rem; }
+  .stats-row {
+    display: flex; gap: 3rem; margin-top: 2.5rem;
+  }
+  .stat-item {}
+  .stat-num {
+    font-family: var(--ff-disp);
+    font-size: 2.6rem; font-weight: 300; color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--muted); margin-top: .3rem;
+  }
+
+  /* ── SERVICES ── */
+  #services { background: var(--black); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    border: 1px solid var(--border);
+    margin-top: 4rem;
+  }
+  .service-card {
+    padding: 3rem 2.4rem;
+    border-right: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    transition: background .3s;
+  }
+  .service-card:nth-child(3n) { border-right: none; }
+  .service-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(212,184,122,.06) 0%, transparent 60%);
+    opacity: 0; transition: opacity .4s;
+  }
+  .service-card:hover::before { opacity: 1; }
+  .service-card:hover { background: var(--panel); }
+  .service-num {
+    font-family: var(--ff-disp);
+    font-size: 3.5rem; font-weight: 300;
+    color: rgba(212,184,122,.55);
+    line-height: 1; margin-bottom: 1.5rem;
+  }
+  .service-icon {
+    width: 44px; height: 44px; margin-bottom: 1.5rem;
+    color: var(--gold);
+  }
+  .service-name {
+    font-family: var(--ff-disp);
+    font-size: 1.5rem; font-weight: 400;
+    color: var(--cream); margin-bottom: 1rem;
+  }
+  .service-desc { font-size: .88rem; color: var(--muted); line-height: 1.75; }
+  .service-link {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--gold); text-decoration: none; margin-top: 1.8rem;
+    transition: gap .25s;
+  }
+  .service-link:hover { gap: 1rem; }
+
+  /* ── PROCESS ── */
+  #process { background: var(--black); }
+  .process-steps {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; margin-top: 4rem;
+    border-top: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+  }
+  .process-step {
+    padding: 3rem 2.2rem;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    transition: background .3s;
+  }
+  .process-step:hover { background: var(--panel); }
+  .step-num {
+    font-family: var(--ff-head);
+    font-size: .65rem; letter-spacing: .2em;
+    color: var(--gold); margin-bottom: 2rem;
+  }
+  .step-name {
+    font-family: var(--ff-disp);
+    font-size: 1.4rem; color: var(--cream); margin-bottom: 1rem;
+  }
+  .step-desc { font-size: .85rem; color: var(--muted); line-height: 1.7; }
+
+  /* ── ABOUT ── */
+  #about { background: var(--panel); border-top: 1px solid var(--border); }
+  .about-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8rem; align-items: center;
+  }
+  .about-visual {
+    position: relative; display: flex; justify-content: center;
+  }
+  .about-card {
+    width: 100%; max-width: 420px;
+    aspect-ratio: 3/4;
+    background: var(--dark);
+    border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .about-card-inner {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 30%, rgba(212,184,122,.08) 0%, transparent 70%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 1.5rem;
+    padding: 2.5rem;
+  }
+  .about-lotus-svg { width: 100px; opacity: .7; }
+  .about-card-quote {
+    font-family: var(--ff-disp);
+    font-size: 1.15rem; font-style: italic; font-weight: 300;
+    color: var(--cream); text-align: center; line-height: 1.6;
+    opacity: .8;
+  }
+  .about-card-line { width: 40px; height: 1px; background: var(--gold); opacity: .5; }
+  .about-accent {
+    position: absolute; top: -2rem; right: -2rem;
+    width: 140px; height: 140px;
+    border: 1px solid var(--border);
+    border-radius: 50%; z-index: -1;
+  }
+  .about-content {}
+  .about-body { color: var(--muted); line-height: 1.85; margin-top: 1.5rem; }
+  .about-body p + p { margin-top: 1rem; }
+  .about-list {
+    margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1rem;
+  }
+  .about-list-item {
+    display: flex; align-items: center; gap: 1.2rem;
+    font-size: .88rem; color: var(--muted);
+  }
+  .about-list-item::before {
+    content: ''; display: block; width: 20px; height: 1px; background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* ── CTA BAND ── */
+  #cta-band {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 6rem 4rem;
+    text-align: center;
+  }
+  .cta-band-inner { max-width: 700px; margin: 0 auto; }
+  .cta-band-title {
+    font-family: var(--ff-disp);
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 300; line-height: 1.1; color: var(--cream);
+    margin-bottom: 1.5rem;
+  }
+  .cta-band-title em { font-style: italic; color: var(--gold); }
+  .cta-band-sub { color: var(--muted); font-size: .95rem; margin-bottom: 3rem; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--dark); }
+  .contact-header {
+    text-align: center; max-width: 600px; margin: 0 auto;
+  }
+  .contact-meta-bar {
+    display: flex; justify-content: center; align-items: center;
+    flex-wrap: wrap; gap: 0;
+    margin: 3rem 0 3.5rem;
+    border: 1px solid var(--border);
+    background: var(--panel);
+  }
+  .contact-meta-item {
+    display: flex; flex-direction: column;
+    padding: 1.4rem 2.4rem;
+    border-right: 1px solid var(--border);
+    flex: 1; min-width: 160px;
+  }
+  .contact-meta-item:last-child { border-right: none; }
+  .contact-item-label {
+    font-size: .58rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: .4rem;
+  }
+  .contact-item-val {
+    font-family: var(--ff-disp);
+    font-size: 1.05rem; color: var(--cream); font-weight: 300;
+  }
+  .contact-item-val a { color: var(--cream); text-decoration: none; transition: color .25s; }
+  .contact-item-val a:hover { color: var(--gold); }
+  .social-link {
+    display: inline-flex; align-items: center; gap: .6rem;
+    font-family: var(--ff-disp); font-size: 1.05rem; color: var(--cream);
+    text-decoration: none; transition: color .25s;
+  }
+  .social-link:hover { color: var(--gold); }
+  .contact-form-center {
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    padding: 4rem;
+  }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 3rem; flex-wrap: wrap;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .footer-brand {}
+  .footer-tagline {
+    font-family: var(--ff-disp);
+    font-size: .95rem; font-style: italic;
+    color: var(--muted); margin-top: .8rem; max-width: 220px; line-height: 1.5;
+  }
+  .footer-nav { display: flex; gap: 4rem; }
+  .footer-nav-col {}
+  .footer-nav-title {
+    font-size: .62rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.2rem;
+  }
+  .footer-nav-links { display: flex; flex-direction: column; gap: .7rem; }
+  .footer-nav-links a {
+    font-size: .85rem; color: var(--muted); text-decoration: none;
+    transition: color .25s;
+  }
+  .footer-nav-links a:hover { color: var(--cream); }
+  .footer-bottom {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 2rem;
+    font-size: .72rem; color: var(--muted);
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-bottom a { color: var(--muted); text-decoration: none; transition: color .25s; }
+  .footer-bottom a:hover { color: var(--gold); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes scrollAnim {
+    0%   { top: -100%; }
+    100% { top: 100%; }
+  }
+  @keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  /* ── LOTUS SVG INLINE ── */
+  .lotus-nav { fill: none; stroke: var(--gold); stroke-width: 1.5; }
+
+  /* ── DECORATIVE DIVIDERS ── */
+  .gold-line {
+    width: 60px; height: 1px; background: var(--gold); margin: 2rem 0;
+  }
+
+  /* ── CUSTOM INQUIRY FORM ── */
+  .cform-wrap {
+    width: 100%; max-width: 860px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold-dk);
+    position: relative; overflow: hidden;
+  }
+  .cform-wrap::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 220px;
+    background: radial-gradient(ellipse 80% 100% at 50% 0%, rgba(212,184,122,.05) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .cform {
+    padding: 3.5rem 3.5rem;
+    display: flex; flex-direction: column; gap: 2.2rem;
+    position: relative;
+  }
+  .cform-section {
+    display: flex; flex-direction: column; gap: 1.6rem;
+  }
+  .cform-section-title {
+    font-family: var(--ff-head);
+    font-size: .58rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--gold); padding-bottom: .9rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .cform-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
+  }
+  .cform-group {
+    display: flex; flex-direction: column; gap: .55rem;
+  }
+  .cform-label {
+    font-size: .6rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .cform-label em {
+    font-style: normal; color: rgba(138,130,114,.6);
+    font-size: .85em; letter-spacing: .05em; text-transform: none;
+  }
+  .cform-input, .cform-textarea {
+    background: rgba(255,255,255,.025);
+    border: none;
+    border-bottom: 1px solid rgba(212,184,122,.25);
+    padding: .85rem 0;
+    color: var(--cream); font-family: var(--ff-body);
+    font-size: .92rem; font-weight: 300;
+    transition: border-color .25s, background .25s;
+    outline: none; width: 100%;
+  }
+  .cform-input:focus, .cform-textarea:focus {
+    border-bottom-color: var(--gold);
+    background: rgba(212,184,122,.03);
+  }
+  .cform-input::placeholder, .cform-textarea::placeholder {
+    color: rgba(138,130,114,.4);
+  }
+  .cform-textarea { resize: vertical; min-height: 110px; padding: .7rem 0; }
+  .cform-chips {
+    display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .15rem;
+  }
+  .cform-chip {
+    font-size: .7rem; letter-spacing: .08em;
+    padding: .48rem 1rem;
+    border: 1px solid var(--border);
+    color: var(--muted); background: transparent;
+    cursor: pointer; transition: all .2s; user-select: none;
+  }
+  .cform-chip:hover { border-color: rgba(212,184,122,.45); color: var(--cream); }
+  .cform-chip.on,
+  .cform-chip:has(input:checked) {
+    border-color: var(--gold); color: var(--gold);
+    background: rgba(212,184,122,.07);
+  }
+  .cform-footer {
+    display: flex; align-items: center; gap: 2rem;
+    flex-wrap: wrap; padding-top: .4rem;
+    border-top: 1px solid var(--border);
+  }
+  .cform-submit {
+    font-family: var(--ff-head);
+    font-size: .63rem; letter-spacing: .22em; text-transform: uppercase;
+    padding: 1.1rem 2.8rem;
+    background: var(--gold); color: var(--black);
+    border: none; cursor: pointer;
+    transition: all .3s;
+    display: inline-flex; align-items: center; gap: .7rem;
+  }
+  .cform-submit:hover:not(:disabled) { background: var(--gold-lt); transform: translateY(-2px); }
+  .cform-submit:disabled { opacity: .55; cursor: not-allowed; }
+  .cform-reply-note {
+    font-size: .72rem; color: var(--muted); line-height: 1.6;
+  }
+  .cform-success {
+    display: none; flex-direction: column; align-items: center;
+    text-align: center; padding: 5rem 3rem; gap: 1rem;
+    animation: fadeUp .5s ease forwards;
+  }
+  .cform-success.show { display: flex; }
+  .cform-success-title {
+    font-family: var(--ff-disp);
+    font-size: 2.2rem; font-weight: 300; color: var(--cream);
+    margin-top: .5rem;
+  }
+  .cform-success-sub {
+    color: var(--muted); font-size: .9rem;
+    line-height: 1.85; max-width: 400px;
+  }
+  .cform-error-msg {
+    font-size: .78rem; color: #c97b7b;
+    margin-top: -.8rem; display: none;
+  }
+  @media (max-width: 700px) {
+    .cform { padding: 2.2rem 1.4rem; gap: 1.8rem; }
+    .cform-row { grid-template-columns: 1fr; }
+    .contact-meta-bar { flex-direction: column; }
+    .contact-meta-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .contact-meta-item:last-child { border-bottom: none; }
+  }
+
+  /* ── END ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.4rem 2rem; }
+    nav.scrolled { padding: 1rem 2rem; }
+    .nav-links { display: none; }
+    .section-pad { padding: 5rem 2rem; }
+    .section-pad-sm { padding: 3.5rem 2rem; }
+    #about-strip { padding: 4rem 2rem; }
+    .about-strip-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { border-right: none; border-bottom: 1px solid var(--border); }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .about-inner { grid-template-columns: 1fr; gap: 4rem; }
+    .contact-inner { grid-template-columns: 1fr; gap: 4rem; }
+    .form-row { grid-template-columns: 1fr; }
+    #cta-band { padding: 5rem 2rem; }
+    footer { padding: 3rem 2rem; }
+    .footer-inner { flex-direction: column; gap: 2.5rem; }
+    .footer-nav { gap: 2.5rem; }
+    .hero-title { font-size: clamp(3rem, 14vw, 5rem); }
+    .stats-row { gap: 2rem; }
+    /* Fix mobile hero scroll overlap */
+    .hero-scroll { display: none; }
+    #home { padding-bottom: 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+  <a href="#home" class="nav-logo">
+    <svg viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="#D4B87A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <!-- center petal -->
+        <path d="M40 8 C36 18, 36 32, 40 42 C44 32, 44 18, 40 8Z"/>
+        <!-- inner left -->
+        <path d="M40 42 C34 34, 26 26, 20 22 C24 30, 32 38, 40 42Z"/>
+        <!-- inner right -->
+        <path d="M40 42 C46 34, 54 26, 60 22 C56 30, 48 38, 40 42Z"/>
+        <!-- mid left -->
+        <path d="M40 42 C30 32, 18 28, 10 28 C16 34, 30 38, 40 42Z"/>
+        <!-- mid right -->
+        <path d="M40 42 C50 32, 62 28, 70 28 C64 34, 50 38, 40 42Z"/>
+        <!-- base line -->
+        <line x1="18" y1="46" x2="62" y2="46"/>
+      </g>
+    </svg>
+    <div class="nav-logo-text">Designs<br>By Lotus</div>
+  </a>
+  <div class="nav-links">
+    <a href="#about-strip">About</a>
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#contact" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'});return false;">Contact</a>
+  </div>
+  <a href="#contact" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'});return false;" class="nav-cta">Start Your Project</a>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-bg-lines"></div>
+
+  <!-- faded logo watermark -->
+  <div class="hero-logo-bg" aria-hidden="true">
+    <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="baseGlow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="1" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <g fill="none" stroke="#D4B87A" stroke-width="0.7"
+         stroke-linecap="round" stroke-linejoin="round" opacity="0.18" filter="url(#baseGlow)">
+        <path d="M100 20 C91 45, 91 80, 100 105 C109 80, 109 45, 100 20Z"/>
+        <path d="M100 105 C85 85, 65 65, 50 55 C60 75, 80 95, 100 105Z"/>
+        <path d="M100 105 C115 85, 135 65, 150 55 C140 75, 120 95, 100 105Z"/>
+        <path d="M100 105 C75 80, 45 70, 25 70 C40 85, 75 95, 100 105Z"/>
+        <path d="M100 105 C125 80, 155 70, 175 70 C160 85, 125 95, 100 105Z"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="hero-eyebrow">Web Design &amp; Development Studio</div>
+  <h1 class="hero-title">
+    Where vision<br>becomes <em>digital art</em>
+  </h1>
+  <p class="hero-sub">
+    We build polished, professional websites for businesses ready to stand out — cafés, contractors, service brands, and everyone in between.
+  </p>
+  <div class="hero-actions">
+    <a href="#contact" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'});return false;" class="btn-primary">Start Your Project</a>
+    
+  </div>
+
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-inner" id="marquee">
+    <span class="marquee-item">Brand Identity <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Web Design <span class="marquee-dot"></span></span>
+    <span class="marquee-item">UI / UX <span class="marquee-dot"></span></span>
+    <span class="marquee-item">E-Commerce <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Custom Development <span class="marquee-dot"></span></span>
+    <span class="marquee-item">SEO Strategy <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Motion &amp; Animation <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Landing Pages <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Brand Identity <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Web Design <span class="marquee-dot"></span></span>
+    <span class="marquee-item">UI / UX <span class="marquee-dot"></span></span>
+    <span class="marquee-item">E-Commerce <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Custom Development <span class="marquee-dot"></span></span>
+    <span class="marquee-item">SEO Strategy <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Motion &amp; Animation <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Landing Pages <span class="marquee-dot"></span></span>
+  </div>
+</div>
+
+<!-- ABOUT STRIP -->
+<section id="about-strip">
+  <div class="about-strip-inner">
+    <div class="reveal">
+      <div class="section-label">About the Studio</div>
+      <h2 class="about-strip-title">
+        Built for businesses<br>that <em>want</em><br>to stand out.
+      </h2>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Projects Launched</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Custom Built</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Creative Drive</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:.15s">
+      <div class="about-strip-body">
+        <p>Designs By Lotus is a design studio obsessed with the intersection of beauty and function. Every pixel is intentional, every interaction considered.</p>
+        <p>We partner with businesses of all kinds — cafés, contractors, service providers, and growing brands — to build websites that don't just look stunning, they convert, engage, and elevate.</p>
+        <p>From the initial concept to the final launch, we're with you at every step, ensuring your digital presence is as strong as the business behind it.</p>
+      </div>
+      <div class="gold-line"></div>
+      <a href="#contact" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'});return false;" class="btn-primary" style="margin-top:.5rem">Let's Create Together</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="section-pad">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">What We Do</div>
+      <h2 class="section-title">Services crafted<br>with <em>intention</em></h2>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <div class="service-num">01</div>
+        <svg class="service-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.2">
+          <rect x="4" y="8" width="36" height="24" rx="2"/>
+          <line x1="4" y1="36" x2="40" y2="36"/>
+          <line x1="16" y1="32" x2="28" y2="32"/>
+          <path d="M14 16h16M14 21h10"/>
+        </svg>
+        <div class="service-name">Web Design</div>
+        <div class="service-desc">Bespoke, visually arresting websites tailored to your brand identity. Every layout, color, and type choice made with purpose and precision.</div>
+      </div>
+
+      <div class="service-card reveal" style="transition-delay:.1s">
+        <div class="service-num">02</div>
+        <svg class="service-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.2">
+          <polyline points="8,28 16,18 22,24 30,12 38,20"/>
+          <rect x="4" y="4" width="36" height="36" rx="2"/>
+        </svg>
+        <div class="service-name">Brand Identity</div>
+        <div class="service-desc">Logos, color systems, typography guides, and visual language that tell your story before you say a word. Cohesive, modern, and unforgettable.</div>
+      </div>
+
+      <div class="service-card reveal" style="transition-delay:.2s">
+        <div class="service-num">03</div>
+        <svg class="service-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M8 22 C8 14 14 8 22 8 C30 8 36 14 36 22 C36 30 30 36 22 36"/>
+          <path d="M22 36 C18 30 16 26 22 22 C28 18 30 14 22 8"/>
+          <line x1="8" y1="22" x2="36" y2="22"/>
+          <path d="M14 14 C18 18 22 20 22 22"/>
+        </svg>
+        <div class="service-name">Custom Development</div>
+        <div class="service-desc">Clean, fast, and scalable code built from scratch. We develop sites that perform beautifully on every device and rank well on every search engine.</div>
+      </div>
+
+      <div class="service-card reveal" style="transition-delay:.05s">
+        <div class="service-num">04</div>
+        <svg class="service-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.2">
+          <rect x="6" y="6" width="14" height="18" rx="1"/>
+          <rect x="24" y="6" width="14" height="10" rx="1"/>
+          <rect x="24" y="22" width="14" height="16" rx="1"/>
+          <rect x="6" y="28" width="14" height="10" rx="1"/>
+        </svg>
+        <div class="service-name">UI / UX Design</div>
+        <div class="service-desc">User experience strategy and interface design that guides visitors effortlessly toward your goals. Intuitive flows, elegant interactions, delightful details.</div>
+      </div>
+
+      <div class="service-card reveal" style="transition-delay:.15s">
+        <div class="service-num">05</div>
+        <svg class="service-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.2">
+          <circle cx="22" cy="22" r="8"/>
+          <path d="M22 8 L22 4M22 40 L22 36M36 22 L40 22M8 22 L4 22"/>
+          <path d="M32 12 L34.8 9.2M9.2 34.8 L12 32M32 32 L34.8 34.8M9.2 9.2 L12 12"/>
+        </svg>
+        <div class="service-name">E-Commerce</div>
+        <div class="service-desc">Conversion-optimized online stores that make buying feel effortless. From product pages to checkout, every touchpoint designed to sell.</div>
+      </div>
+
+      <div class="service-card reveal" style="transition-delay:.25s">
+        <div class="service-num">06</div>
+        <svg class="service-icon" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M10 34 C10 26 14 20 22 18 C30 16 36 20 36 28"/>
+          <path d="M8 28 L22 14 L36 22"/>
+          <circle cx="22" cy="14" r="2" fill="currentColor"/>
+          <line x1="10" y1="38" x2="34" y2="38"/>
+        </svg>
+        <div class="service-name">Landing Pages</div>
+        <div class="service-desc">High-impact, single-page experiences engineered for maximum impact. Perfect for launches, campaigns, and lead generation.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<!-- PROCESS -->
+<section id="process" class="section-pad">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">How We Work</div>
+      <h2 class="section-title">A process built for<br><em>exceptional</em> results</h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="step-num">Step 01</div>
+        <div class="step-name">Discovery</div>
+        <div class="step-desc">We begin by understanding your brand, your goals, and your audience. A deep brief that shapes every decision that follows.</div>
+      </div>
+      <div class="process-step reveal" style="transition-delay:.1s">
+        <div class="step-num">Step 02</div>
+        <div class="step-name">Strategy</div>
+        <div class="step-desc">Wireframes, sitemaps, and content strategy aligned to your business objectives. Structure before aesthetics.</div>
+      </div>
+      <div class="process-step reveal" style="transition-delay:.2s">
+        <div class="step-num">Step 03</div>
+        <div class="step-name">Design</div>
+        <div class="step-desc">High-fidelity mockups that bring your brand to life. We iterate together until every detail is exactly right.</div>
+      </div>
+      <div class="process-step reveal" style="transition-delay:.3s">
+        <div class="step-num">Step 04</div>
+        <div class="step-name">Launch</div>
+        <div class="step-desc">Clean development, rigorous testing, and a flawless go-live. Then we hand it over — polished, optimized, and ready.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT FULL -->
+<section id="about" class="section-pad">
+  <div class="container">
+    <div class="about-inner">
+      <div class="about-visual reveal">
+        <div class="about-card">
+          <div class="about-card-inner">
+            <svg class="about-lotus-svg" viewBox="0 0 160 112" xmlns="http://www.w3.org/2000/svg">
+              <g fill="none" stroke="#D4B87A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M80 16 C72 38, 72 66, 80 84 C88 66, 88 38, 80 16Z"/>
+                <path d="M80 84 C66 68, 48 56, 34 50 C40 62, 62 74, 80 84Z"/>
+                <path d="M80 84 C94 68, 112 56, 126 50 C120 62, 98 74, 80 84Z"/>
+                <path d="M80 84 C56 62, 28 56, 14 56 C26 66, 62 76, 80 84Z"/>
+                <path d="M80 84 C104 62, 132 56, 146 56 C134 66, 98 76, 80 84Z"/>
+                <line x1="32" y1="94" x2="128" y2="94"/>
+              </g>
+            </svg>
+            <div class="about-card-line"></div>
+            <div class="about-card-quote">"We design experiences that leave a lasting impression."</div>
+          </div>
+        </div>
+        <div class="about-accent"></div>
+      </div>
+      <div class="about-content reveal" style="transition-delay:.15s">
+        <div class="section-label">Our Story</div>
+        <h2 class="section-title">Design that<br>moves <em>people</em></h2>
+        <div class="about-body">
+          <p>Designs By Lotus was founded on a simple conviction: that beautiful design and powerful functionality aren't trade-offs — they're partners.</p>
+          <p>We work with businesses of all sizes who believe their digital presence should be exceptional. Not adequate. Not templated. Exceptional — regardless of your industry.</p>
+          <p>The lotus represents our philosophy. Emerging with grace from murky waters, it symbolizes the refined, purposeful work we deliver no matter the complexity of the challenge.</p>
+        </div>
+        <div class="about-list">
+          <div class="about-list-item">Custom design — never templates, never shortcuts</div>
+          <div class="about-list-item">Transparent process and honest communication</div>
+          <div class="about-list-item">Performance-first development on every project</div>
+          <div class="about-list-item">Ongoing support after every launch</div>
+        </div>
+        <div style="margin-top:2.5rem">
+          <a href="#contact" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'});return false;" class="btn-primary">Work With Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section id="cta-band">
+  <div class="cta-band-inner reveal">
+    <h2 class="cta-band-title">Ready to build<br>something <em>exceptional</em>?</h2>
+    <p class="cta-band-sub">Every great website starts with a conversation. Tell us about your business and let's make it look the part online.</p>
+    <div class="hero-actions">
+      <a href="#contact" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'});return false;" class="btn-primary">Start Your Project</a>
+      <a href="mailto:designsbylotus.co@gmail.com" class="btn-ghost">Send Us an Email</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section-pad">
+  <div class="container">
+
+    <!-- Header — centred -->
+    <div class="contact-header reveal">
+      <div class="section-label" style="justify-content:center">Get In Touch</div>
+      <h2 class="section-title">Tell us about<br>your <em>project</em></h2>
+      <p style="color:var(--muted);font-size:.95rem;margin-top:1.2rem;line-height:1.8;">
+        Fill out the form below and we'll get back to you within 24–48 hours.
+      </p>
+    </div>
+
+    <!-- Contact meta bar -->
+    <div class="contact-meta-bar reveal" style="transition-delay:.1s">
+      <div class="contact-meta-item">
+        <div class="contact-item-label">Email</div>
+        <div class="contact-item-val"><a href="mailto:designsbylotus.co@gmail.com">designsbylotus.co@gmail.com</a></div>
+      </div>
+      <div class="contact-meta-item">
+        <div class="contact-item-label">Phone</div>
+        <div class="contact-item-val"><a href="tel:7868624586">786-862-4586</a></div>
+      </div>
+      <div class="contact-meta-item">
+        <div class="contact-item-label">Based In</div>
+        <div class="contact-item-val">Toronto, ON — Worldwide</div>
+      </div>
+      <div class="contact-meta-item">
+        <div class="contact-item-label">Instagram</div>
+        <div class="contact-item-val">
+          <a class="social-link" href="https://instagram.com/designsbylotusco" target="_blank">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="2" width="20" height="20" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+            </svg>
+            @designsbylotusco
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Inquiry Form -->
+    <div class="contact-form-center reveal" style="transition-delay:.2s">
+      <div class="cform-wrap">
+
+        <!-- Success state (shown after submit) -->
+        <div class="cform-success" id="cformSuccess">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+            <circle cx="28" cy="28" r="26" stroke="var(--gold)" stroke-width="1.4"/>
+            <path d="M18 28 L24 34 L38 20" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="cform-success-title">Message received.</div>
+          <p class="cform-success-sub">
+            Thank you for reaching out. We'll review your project details and get back to you within 24–48 hours at <span style="color:var(--gold)"><a href="/cdn-cgi/l/email-protection#e185849288868f9283988d8e959492cf828ea1868c80888dcf828e8c" style="color:var(--gold)"><span class="__cf_email__" data-cfemail="fc98998f959b928f9e85909388898fd29f93bc9b919d9590d29f9391">[email&#160;protected]</span></a></span>
+          </p>
+        </div>
+
+        <form class="cform" id="cform"
+              action="https://formspree.io/f/xreooknb"
+              method="POST"
+              novalidate>
+
+          <!-- ── ABOUT YOU ── -->
+          <div class="cform-section">
+            <div class="cform-section-title">About You</div>
+
+            <div class="cform-row">
+              <div class="cform-group">
+                <label class="cform-label">First Name</label>
+                <input type="text" class="cform-input" name="first_name" id="f-first" placeholder="Jane" required>
+              </div>
+              <div class="cform-group">
+                <label class="cform-label">Last Name <em>(optional)</em></label>
+                <input type="text" class="cform-input" name="last_name" placeholder="Doe">
+              </div>
+            </div>
+
+            <div class="cform-row">
+              <div class="cform-group">
+                <label class="cform-label">Email Address</label>
+                <input type="email" class="cform-input" name="email" id="f-email" placeholder="jane@yourbrand.com" required>
+              </div>
+              <div class="cform-group">
+                <label class="cform-label">Phone <em>(optional)</em></label>
+                <input type="tel" class="cform-input" name="phone" placeholder="(123) 456-7890">
+              </div>
+            </div>
+
+            <div class="cform-group">
+              <label class="cform-label">Business / Brand Name <em>(optional)</em></label>
+              <input type="text" class="cform-input" name="business_name" placeholder="Your Brand Co.">
+            </div>
+          </div>
+
+          <!-- ── YOUR PROJECT ── -->
+          <div class="cform-section">
+            <div class="cform-section-title">Your Project</div>
+
+            <div class="cform-group">
+              <label class="cform-label">Services You're Interested In <em>(select all that apply)</em></label>
+              <div class="cform-chips">
+                <label class="cform-chip"><input type="checkbox" name="services" value="Web Design" style="position:absolute;opacity:0;width:0;height:0">Web Design</label>
+                <label class="cform-chip"><input type="checkbox" name="services" value="Brand Identity" style="position:absolute;opacity:0;width:0;height:0">Brand Identity</label>
+                <label class="cform-chip"><input type="checkbox" name="services" value="Custom Development" style="position:absolute;opacity:0;width:0;height:0">Custom Development</label>
+                <label class="cform-chip"><input type="checkbox" name="services" value="E-Commerce" style="position:absolute;opacity:0;width:0;height:0">E-Commerce</label>
+                <label class="cform-chip"><input type="checkbox" name="services" value="Landing Page" style="position:absolute;opacity:0;width:0;height:0">Landing Page</label>
+                <label class="cform-chip"><input type="checkbox" name="services" value="UI / UX Design" style="position:absolute;opacity:0;width:0;height:0">UI / UX</label>
+                <label class="cform-chip"><input type="checkbox" name="services" value="Full Brand + Web Package" style="position:absolute;opacity:0;width:0;height:0">Full Brand + Web Package</label>
+                <label class="cform-chip"><input type="checkbox" name="services" value="Redesign / Refresh" style="position:absolute;opacity:0;width:0;height:0">Redesign / Refresh</label>
+              </div>
+            </div>
+
+            <div class="cform-group">
+              <label class="cform-label">Existing Website <em>(optional)</em></label>
+              <input type="text" class="cform-input" name="existing_site" placeholder="https://yoursite.com">
+            </div>
+
+            <div class="cform-group">
+              <label class="cform-label">Tell Us About Your Project &amp; Goals</label>
+              <textarea class="cform-textarea" name="project_vision" style="min-height:130px"
+                placeholder="Describe your business, who your customers are, what you want the site to achieve, any sites you admire, and anything else that helps us understand your vision..."></textarea>
+            </div>
+          </div>
+
+          <!-- ── FINAL DETAILS ── -->
+          <div class="cform-section">
+            <div class="cform-section-title">Final Details</div>
+
+            <div class="cform-group">
+              <label class="cform-label">Brand Assets Ready? <em>(logo, colours, fonts)</em></label>
+              <div class="cform-chips">
+                <label class="cform-chip"><input type="radio" name="brand_assets" value="Yes — fully ready" style="position:absolute;opacity:0;width:0;height:0">Yes, ready to go</label>
+                <label class="cform-chip"><input type="radio" name="brand_assets" value="Partially — need some help" style="position:absolute;opacity:0;width:0;height:0">Partially — need help</label>
+                <label class="cform-chip"><input type="radio" name="brand_assets" value="Starting from scratch" style="position:absolute;opacity:0;width:0;height:0">Starting from scratch</label>
+              </div>
+            </div>
+
+            <div class="cform-group">
+              <label class="cform-label">How Did You Find Us?</label>
+              <div class="cform-chips">
+                <label class="cform-chip"><input type="radio" name="source" value="Instagram" style="position:absolute;opacity:0;width:0;height:0">Instagram</label>
+                <label class="cform-chip"><input type="radio" name="source" value="Referral / Word of Mouth" style="position:absolute;opacity:0;width:0;height:0">Referral</label>
+                <label class="cform-chip"><input type="radio" name="source" value="Google Search" style="position:absolute;opacity:0;width:0;height:0">Google Search</label>
+                <label class="cform-chip"><input type="radio" name="source" value="Existing Client" style="position:absolute;opacity:0;width:0;height:0">Existing Client</label>
+                <label class="cform-chip"><input type="radio" name="source" value="Other" style="position:absolute;opacity:0;width:0;height:0">Other</label>
+              </div>
+            </div>
+
+            <div class="cform-group">
+              <label class="cform-label">Anything Else? <em>(optional)</em></label>
+              <textarea class="cform-textarea" name="extra_notes" style="min-height:80px"
+                placeholder="Questions, special requests, or a quick hello..."></textarea>
+            </div>
+          </div>
+
+          <!-- ── SUBMIT ── -->
+          <div class="cform-footer">
+            <button type="submit" class="cform-submit" id="cformSubmit">
+              Send Inquiry
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 7h10M8 3l4 4-4 4"/>
+              </svg>
+            </button>
+            <div class="cform-reply-note">
+              We reply within 24–48 hours<br>
+              <span style="color:rgba(138,130,114,.6)"><a href="mailto:designsbylotus.co@gmail.com" style="color:rgba(138,130,114,.6)">designsbylotus.co@gmail.com</a></span>
+            </div>
+          </div>
+          <div class="cform-error-msg" id="cformError">Please fill in your name and email before submitting.</div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#home" class="nav-logo" style="text-decoration:none">
+        <svg viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:30px">
+          <g fill="none" stroke="#D4B87A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M40 8 C36 18, 36 32, 40 42 C44 32, 44 18, 40 8Z"/>
+            <path d="M40 42 C34 34, 26 26, 20 22 C24 30, 32 38, 40 42Z"/>
+            <path d="M40 42 C46 34, 54 26, 60 22 C56 30, 48 38, 40 42Z"/>
+            <path d="M40 42 C30 32, 18 28, 10 28 C16 34, 30 38, 40 42Z"/>
+            <path d="M40 42 C50 32, 62 28, 70 28 C64 34, 50 38, 40 42Z"/>
+            <line x1="18" y1="46" x2="62" y2="46"/>
+          </g>
+        </svg>
+        <div class="nav-logo-text">Designs<br>By Lotus</div>
+      </a>
+      <div class="footer-tagline">Crafting digital experiences for brands that deserve to be noticed.</div>
+    </div>
+    <div class="footer-nav">
+      <div class="footer-nav-col">
+        <div class="footer-nav-title">Navigation</div>
+        <div class="footer-nav-links">
+          <a href="#home">Home</a>
+          <a href="#about-strip">About</a>
+          <a href="#services">Services</a>
+          <a href="#contact" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'});return false;">Contact</a>
+        </div>
+      </div>
+      <div class="footer-nav-col">
+        <div class="footer-nav-title">Services</div>
+        <div class="footer-nav-links">
+          <a href="#services">Web Design</a>
+          <a href="#services">Brand Identity</a>
+          <a href="#services">Development</a>
+          <a href="#services">E-Commerce</a>
+          <a href="#services">UI / UX</a>
+        </div>
+      </div>
+      <div class="footer-nav-col">
+        <div class="footer-nav-title">Contact</div>
+        <div class="footer-nav-links">
+          <a href="mailto:designsbylotus.co@gmail.com">designsbylotus.co@gmail.com</a>
+          <a href="tel:7868624586">786-862-4586</a>
+          <a href="https://instagram.com/designsbylotusco" target="_blank">@designsbylotusco</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Designs By Lotus. All rights reserved.</span>
+    <span>Crafted with intention &amp; precision.</span>
+  </div>
+</footer>
+
+<!-- NO TOAST NEEDED — Form handled by Google Forms -->
+
+<script>
+  // ── ENABLE REVEAL ANIMATIONS (only when JS is running) ──
+  document.documentElement.classList.add('js-ready');
+
+  // ── NAV SCROLL ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── REVEAL ON SCROLL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => obs.observe(el));
+
+  // ── SMOOTH NAV LINKS ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+  // ── CHIP TOGGLES ──
+  document.querySelectorAll('.cform-chips').forEach(group => {
+    const isMulti = group.dataset.multi === 'true';
+    const targetId = group.dataset.target;
+    const hidden = targetId ? document.getElementById(targetId) : null;
+
+    group.querySelectorAll('.cform-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        if (isMulti) {
+          chip.classList.toggle('on');
+        } else {
+          group.querySelectorAll('.cform-chip').forEach(c => c.classList.remove('on'));
+          chip.classList.add('on');
+        }
+        // Sync hidden input
+        if (hidden) {
+          const selected = [...group.querySelectorAll('.cform-chip.on')].map(c => c.dataset.val);
+          hidden.value = selected.join(', ');
+        }
+      });
+    });
+  });
+
+  // ── FORM SUBMIT (Formspree AJAX) ──
+  const cform = document.getElementById('cform');
+  const cformSubmit = document.getElementById('cformSubmit');
+  const cformSuccess = document.getElementById('cformSuccess');
+  const cformError = document.getElementById('cformError');
+
+  if (cform) {
+    cform.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Basic validation
+      const first = document.getElementById('f-first').value.trim();
+      const email = document.getElementById('f-email').value.trim();
+      if (!first || !email) {
+        cformError.style.display = 'block';
+        document.getElementById('f-first').focus();
+        return;
+      }
+      cformError.style.display = 'none';
+
+      // Disable button & show loading
+      cformSubmit.disabled = true;
+      cformSubmit.textContent = 'Sending…';
+
+      try {
+        const data = new FormData(cform);
+        const res = await fetch(cform.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'app
